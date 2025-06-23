@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.datasets import mnist
+from keras.datasets import mnist
 import random
 
 (x_train, y_train), (_, _) = mnist.load_data()
