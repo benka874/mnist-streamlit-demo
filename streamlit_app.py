@@ -1,18 +1,21 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-from sklearn.datasets import load_digits
 import numpy as np
 import random
+from sklearn.datasets import fetch_openml
 
-# Load digits dataset from sklearn
-digits = load_digits()
-images = digits.images
-labels = digits.target
+st.title("High-Resolution Handwritten Digit Viewer (MNIST 28x28)")
 
-st.title("Handwritten Digit Viewer (0–9)")
+@st.cache_data
+def load_mnist():
+    mnist = fetch_openml('mnist_784', version=1, as_frame=False)
+    images = mnist['data'].reshape(-1, 28, 28)
+    labels = mnist['target'].astype(int)
+    return images, labels
+
+images, labels = load_mnist()
+
 digit = st.selectbox("Select a digit", list(range(10)))
-
-# Filter images for the selected digit
 digit_images = images[labels == digit]
 
 if st.button("Generate Images"):
@@ -22,4 +25,5 @@ if st.button("Generate Images"):
         ax.imshow(img, cmap='gray')
         ax.axis('off')
     st.pyplot(fig)
+
 
